@@ -1,0 +1,64 @@
+{
+	"L1s": [
+		{
+			"definition": "Human LINE1 (L1.3) repetitive element DNA sequence",
+			"URL": "https://www.ncbi.nlm.nih.gov/nuccore/L19086.1"
+		},
+		{
+			"definition": "Human LINE1 (L1.3) repetitive element DNA sequence",
+			"URL": "https://www.ncbi.nlm.nih.gov/nuccore/L19087.1"
+		},
+		{
+			"definition": "Human LINE1 (L1.3) repetitive element DNA sequence",
+			"URL": "https://www.ncbi.nlm.nih.gov/nuccore/L19088.1"
+		},
+		{
+			"definition": "Human LINE1 (L1.4) repetitive element DNA sequence",
+			"URL": "https://www.ncbi.nlm.nih.gov/nuccore/L19089.1"
+		},
+		{
+			"definition": "Human LINE1 (L1.4) repetitive element DNA sequence",
+			"URL": "https://www.ncbi.nlm.nih.gov/nuccore/L19090.1"
+		},
+		{
+			"definition": "Human LINE1 (L1.4) repetitive element DNA sequence",
+			"URL": "https://www.ncbi.nlm.nih.gov/nuccore/L19091.1"
+		},
+		{
+			"definition": "Human LINE1 (L1.4) repetitive element DNA sequence",
+			"URL": "https://www.ncbi.nlm.nih.gov/nuccore/L19092.1"
+		},
+		{
+			"definition": "Homo sapiens LINE1 element inserted in B-globin gene intron 2",
+			"URL": "https://www.ncbi.nlm.nih.gov/nuccore/AF149422.1"
+		},
+		{
+			"definition": "Homo sapiens 5' flanking region of LINE1 element within the apo(a)-plasminogen intergenic region",
+			"URL": "https://www.ncbi.nlm.nih.gov/nuccore/AJ316226.2"
+		},
+		{
+			"definition": "Homo sapiens retrotransposon L1 insertion in X-linked retinitis pigmentosa locus, complete sequence",
+			"URL": "https://www.ncbi.nlm.nih.gov/nuccore/AF148856.1"
+		},
+		{
+			"definition": "Homo sapiens pre-integration site of LINE1-mediated deletion LH15 genomic sequence",
+			"URL": "https://www.ncbi.nlm.nih.gov/nuccore/DQ017967.1"
+		},
+		{
+			"definition": "Homo sapiens pre-integration site of LINE1-mediated deletion LH19 genomic sequence",
+			"URL": "https://www.ncbi.nlm.nih.gov/nuccore/DQ017968.1"
+		},
+		{
+			"definition": "Homo sapiens pre-integration site of LINE1-mediated deletion LH24 genomic sequence",
+			"URL": "https://www.ncbi.nlm.nih.gov/nuccore/DQ017969.1"
+		},
+		{
+			"definition": "Homo sapiens pre-integration site of LINE1-mediated deletion LH26 genomic sequence",
+			"URL": "https://www.ncbi.nlm.nih.gov/nuccore/DQ017970.1"
+		},
+		{
+			"definition": "Homo sapiens pre-integration site of LINE1-mediated deletion LH28 genomic sequence",
+			"URL": "https://www.ncbi.nlm.nih.gov/nuccore/DQ017971.1"
+		}
+	]
+}
