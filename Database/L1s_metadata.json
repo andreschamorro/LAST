@@ -60,6 +60,7 @@
 			"definition": "Homo sapiens pre-integration site of LINE1-mediated deletion LH28 genomic sequence",
 			"URL": "https://www.ncbi.nlm.nih.gov/nuccore/DQ017971.1"
 		},
+		{
 			"definition":"HAL1B",
 			"URL":"http://www.girinst.org/protected/repbase_extract.php?access=HAL1B&format=FASTA"
 		},
