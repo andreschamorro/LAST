@@ -1,7 +1,7 @@
 # common_chars_seqs.py
 # Author: Juan O. Lopez (juano.lopez@upr.edu)
 # Creation date:     March 29, 2018
-# Modification date: March 29, 2018
+# Modification date: April 23, 2018
 #
 # This program receives an input file (FASTA or text) that contains 
 # the sequences that are to be compared.  The characters that are in common
@@ -20,6 +20,7 @@
 from Bio.Seq import Seq
 from Bio.Alphabet.IUPAC import unambiguous_dna
 
+import os
 import sys
 
 if len(sys.argv) < 2:
@@ -51,19 +52,20 @@ while commPct < commPctLimit:
         # We haven't met the commonality percentage, so in the next iteration we will exclude
         # the sequence that caused the most changes.
         seqsToExclude.append(charsChanged.index(max(charsChanged)))
-print("Sequences excluded (0-indexed):", seqsToExclude)
-print("--------------------------")
-print("Number of changes caused by sequences considered (# changes, # seq):")
+fOut = open(os.path.splitext(sys.argv[1])[0]+"_Common.txt","w")
+fOut.write("LOOKING FOR COLUMNS THAT HAVE 100% MATCH\n")
+fOut.write("Sequences excluded (0-indexed): " + str(seqsToExclude) + "\n")
+fOut.write("--------------------------\n")
+fOut.write("Number of changes caused by sequences considered (# changes, # seq):\n")
 # We'll print in descending order of values in the following format: (#changes, #seq)
 charsChanged = [ (charsChanged[i], i) for i in range(len(charsChanged)) ]
-print(sorted(charsChanged,reverse=True))
-print("--------------------------")
-print("Characters in common with all sequences (except those in \"Sequences excluded\"):")
-print(consensus)
-print(str(charsInCommon)+"/"+str(len(consensus)),
-        "("+str(round(commPct,2))+"%)",
-        str("characters in common"))
-print("--------------------------")
+fOut.write(str(sorted(charsChanged,reverse=True)) + "\n")
+fOut.write("--------------------------\n")
+fOut.write("Characters in common with all sequences (except those in \"Sequences excluded\"):\n")
+fOut.write(str(consensus)+"\n")
+fOut.write(str(charsInCommon)+"/"+str(len(consensus)) +
+        " ("+str(round(commPct,2))+"%) characters in common\n")
+fOut.write("--------------------------\n")
 
 # We want to count the ocurrences of each letter in each position, so that we
 # can use the highest-occuring letter for our consensus
@@ -76,5 +78,10 @@ for i in range(len(consensus)): # For each letter
 for i in range(len(consensus)):
     if consensus[i] == '-':
         consensus[i] = max(letterCounts[i],key=lambda k:letterCounts[i][k])
-print("Final consensus:")
-print(consensus)
+fOut.write("\nFINAL CONSENSUS:\n")
+fOut.write(str(consensus)+"\n")
+fOut.write("--------------------------\n")
+fOut.write("Nucleotide count (per column) used to determine consensus:\n")
+for i in range(len(consensus)):
+    fOut.write(str(i+1) + ") " + str(sorted([(v, k) for (k, v) in letterCounts[i].items() if k != "X" ],reverse=True)) + "\n")
+fOut.close()
