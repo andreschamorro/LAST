@@ -37,7 +37,7 @@ Kmer::Kmer ()
  * Description:  constructor
  *--------------------------------------------------------------------------------------
  */
-Kmer::Kmer (uint64_t key)
+Kmer::Kmer (unsigned int key)
 {
 	_kmer = new BST(key);
 }  /* -----  end of method Kmer::Kmer  (constructor)  ----- */
@@ -73,7 +73,7 @@ Kmer::getNs ( )
 }		/* -----  end of method Kmer::getNs  ----- */
 
 	void
-Kmer::setK ( uint64_t key)
+Kmer::setK ( unsigned int key)
 {
 	if (!_kmer) {
 		_kmer = new BST(key);
@@ -85,14 +85,14 @@ Kmer::setK ( uint64_t key)
 }		/* -----  end of method Kmer::setK  ----- */
 
 	std::string
-Kmer::toSeq ( uint64_t key )
+Kmer::toSeq ( unsigned int key )
 {
 	std::string seq;
-  uint64_t shift = 2;
-  uint64_t mask = BASE_MASK << shift;
+  unsigned int shift = 2;
+  unsigned int mask = BASE_MASK << shift;
 
   /* get the i-th DNA base */
-  uint64_t base = (key & mask) >> shift;
+  unsigned int base = (key & mask) >> shift;
 
   switch (base)
   {
@@ -115,31 +115,33 @@ Kmer::toSeq ( uint64_t key )
 }		/* -----  end of method Kmer::toSeq  ----- */
 
 
-	uint64_t
+	unsigned int
 Kmer::toBin ( std::string seq)
 {
-	uint64_t binary = 0x0;
-	uint64_t shift = 2;
+	unsigned int rep = 0;
+	unsigned int shift = 10;
 	
 	for (size_t i = 0; i < seq.size(); ++i) {
   	switch (seq[i]){
   	    case 'A':
-						binary = (binary << shift) | (BASE_A);
+						rep = rep * shift + (BASE_A);
   	        break;
   	    case 'C':
-						binary = (binary << shift) | (BASE_C);
+						rep = rep * shift + (BASE_C);
   	        break;
   	    case 'G':
-						binary = (binary << shift) | (BASE_G);
+						rep = rep * shift + (BASE_G);
   	        break;
   	    case 'T':
-						binary = (binary << shift) | (BASE_T);
+						rep = rep * shift + (BASE_T);
+  	        break;
+  	    case 'N':
   	        break;
   	    default:
   	        throw std::invalid_argument("invalid DNA base");
   	}
 	}
-	return binary;
+	return rep;
 }		/* -----  end of method Kmer::toBin  ----- */
 
 	unsigned int
@@ -148,21 +150,21 @@ Kmer::fromSequence ( std::string seqs, unsigned int k )
 
 	bool mark = false;
 	unsigned int count;
-	uint64_t bin = 0x0;
+	unsigned int rep = 0;
 	std::string buf (seqs, 0, k);
 
 	if (_kmer) {
 		delete _kmer;
 	}
-	_kmer = new BST( 0x1 << (2*k-1) );
+	_kmer = new BST( (2*k-1) );
 	_ns = 0;
 
-	bin = toBin(buf);
-	if ((bin == _kmer->getRootKey()) && mark) {
+	rep = toBin(buf);
+	if ((rep == _kmer->getRootKey()) && mark) {
 		_ns++;
 		mark = true;
 	} else {
-		count = _kmer->add(bin);
+		count = _kmer->add(rep);
 		if (count == 1) {
 			_ns++;
 		}
@@ -170,12 +172,12 @@ Kmer::fromSequence ( std::string seqs, unsigned int k )
 
 	for (std::size_t i = k; i < seqs.size(); i++) {
 		buf = buf.substr(1) + seqs[i];
-		bin = toBin(buf);
-		if ((bin == _kmer->getRootKey()) && mark) {
+		rep = toBin(buf);
+		if ((rep == _kmer->getRootKey()) && mark) {
 			_ns++;
 			mark = true;
 		} else {
-			count = _kmer->add(bin);
+			count = _kmer->add(rep);
 			if (count == 1) {
 				_ns++;
 			}
@@ -190,7 +192,7 @@ Kmer::getKs ( std::string seqs )
 {
 	bool mark = false;
 	unsigned int count;
-	uint64_t bin = 0x0;
+	unsigned int rep = 0;
 
 	unsigned int k = 0;
 	_ns = 0;
@@ -201,15 +203,15 @@ Kmer::getKs ( std::string seqs )
 		if (_kmer) {
 			delete _kmer;
 		}
-		_kmer = new BST( 0x1 << (2*k-1) );
+		_kmer = new BST( (2*k-1) );
 		_ns = 0;
 
-		bin = toBin(buf);
-		if ((bin == _kmer->getRootKey()) && mark) {
+		rep = toBin(buf);
+		if ((rep == _kmer->getRootKey()) && mark) {
 			_ns++;
 			mark = true;
 		} else {
-			count = _kmer->add(bin);
+			count = _kmer->add(rep);
 			if (count == 1) {
 				_ns++;
 			}
@@ -217,12 +219,12 @@ Kmer::getKs ( std::string seqs )
 
 		for (std::size_t i = k; i < seqs.size(); i++) {
 			buf = buf.substr(1) + seqs[i];
-			bin = toBin(buf);
-			if ((bin == _kmer->getRootKey()) && mark) {
+			rep = toBin(buf);
+			if ((rep == _kmer->getRootKey()) && mark) {
 				_ns++;
 				mark = true;
 			} else {
-				count = _kmer->add(bin);
+				count = _kmer->add(rep);
 				if (count == 1) {
 					_ns++;
 				} else if (count > 2){
@@ -249,7 +251,7 @@ Kmer::BSTForest ( std::string seqs, unsigned int ks, unsigned int max )
 	MatrixRow
 Kmer::getSim ( )
 {
-	std::vector<uint64_t> keys;
+	std::vector<unsigned int> keys;
 	_kmer->getKeys(keys);
 
 	MatrixRow S(keys.size(), keys.size());

@@ -37,7 +37,7 @@ BST::BST ()
  * Description:  constructor
  *--------------------------------------------------------------------------------------
  */
-BST::BST (uint64_t key)
+BST::BST (unsigned int key)
 {
 	_root = new Node(key);
 }  /* -----  end of method BST::BST  (constructor)  ----- */
@@ -70,7 +70,7 @@ BST::~BST ()
 
 
 	Node *
-BST::trav ( uint64_t key, Node * & par )
+BST::trav ( unsigned int key, Node * & par )
 {
 	Node * curr = _root;
 	par = NULL;
@@ -106,14 +106,14 @@ BST::getRoot ( )
 	return _root;
 }		/* -----  end of method BST::getRoot  ----- */
 
-	uint64_t
+	unsigned int
 BST::getRootKey ( )
 {
 	return _root->key;
 }		/* -----  end of method BST::getRoot  ----- */
 
 	void
-BST::getKeys ( Node * n, std::vector<uint64_t> & keys )
+BST::getKeys ( Node * n, std::vector<unsigned int> & keys )
 {
 	if (n) {
 		keys.push_back(n->key);
@@ -124,14 +124,14 @@ BST::getKeys ( Node * n, std::vector<uint64_t> & keys )
 }		/* -----  end of method BST::getKeys  ----- */
 
 	void
-BST::getKeys ( std::vector<uint64_t> & keys )
+BST::getKeys ( std::vector<unsigned int> & keys )
 {
 	return getKeys(_root, keys);
 }		/* -----  end of method BST::getKeys  ----- */
 
 
 	Node *
-BST::search ( uint64_t key )
+BST::search ( unsigned int key )
 {
 	Node * par = NULL;
 	Node * curr = trav(key, par);
@@ -140,7 +140,7 @@ BST::search ( uint64_t key )
 
 
 	unsigned int
-BST::add ( uint64_t key )
+BST::add ( unsigned int key )
 {
 	Node * par = NULL;
 	Node * curr = trav(key, par);
@@ -203,7 +203,7 @@ BST::operator = ( const BST &other )
 
 
 	void
-BST::print ( Node * curr, uint64_t level ) const
+BST::print ( Node * curr, unsigned int level ) const
 {
 	if (curr) {
 		print(curr->right, level+1);
@@ -214,7 +214,7 @@ BST::print ( Node * curr, uint64_t level ) const
 }		/* -----  end of method BST::print  ----- */
 
 	void
-BST::print ( std::ostream & ost, Node * curr, uint64_t level ) const
+BST::print ( std::ostream & ost, Node * curr, unsigned int level ) const
 {
 	if (curr) {
 		print(curr->right, level+1);

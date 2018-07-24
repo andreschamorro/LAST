@@ -35,7 +35,7 @@
 class Node
 {
 	public:
-		uint64_t key;
+		unsigned int key;
 		unsigned int count;
 		bool mark;
 		Node *left = NULL;
@@ -46,17 +46,17 @@ class Node
 			this->mark = false;
 			this->count = 0;
 		}                             /* constructor      */
-		Node (uint64_t key) {
+		Node (unsigned int key) {
 			this->key = key;
 			this->mark = false;
 			this->count = 1;
 		}                             /* constructor      */
-		Node (uint64_t key, bool mark) {
+		Node (unsigned int key, bool mark) {
 			this->key = key;
 			this->mark = mark;
 			this->count = 1;
 		}                             /* constructor      */
-		Node (uint64_t key, Node *left, Node *right) {
+		Node (unsigned int key, Node *left, Node *right) {
 			this->key = key;
 			this->mark = true;
 			this->count = 1;
@@ -77,34 +77,34 @@ class BST
 	public:
 		/* ====================  LIFECYCLE     ======================================= */
 		BST ();                             /* constructor      */
-		BST (uint64_t );                             /* constructor      */
+		BST (unsigned int );                             /* constructor      */
 		BST ( const BST &other );   /* copy constructor */
 		~BST ();                           /* destructor       */
 
 		/* ====================  ACCESSORS     ======================================= */
 
-		Node *trav(uint64_t, Node * &);
+		Node *trav(unsigned int, Node * &);
 		void setRootMark();
 		void setMark( Node *);
 		Node *getRoot();
-		uint64_t getRootKey();
-		void getKeys(Node *, std::vector<uint64_t> &);
-		void getKeys( std::vector<uint64_t> & );
+		unsigned int getRootKey();
+		void getKeys(Node *, std::vector<unsigned int> &);
+		void getKeys( std::vector<unsigned int> & );
 
 		/* ====================  MUTATORS      ======================================= */
 
-		unsigned int add(uint64_t );
+		unsigned int add(unsigned int );
 
-		void remove(uint64_t );
+		void remove(unsigned int );
 
-		Node * search(uint64_t );
+		Node * search(unsigned int );
 
 		void copy(Node *);
 
 		/* ====================  OPERATORS     ======================================= */
 
-		void print(std::ostream &, Node *, uint64_t ) const;
-		void print(Node *, uint64_t ) const;
+		void print(std::ostream &, Node *, unsigned int ) const;
+		void print(Node *, unsigned int ) const;
 		void print( ) const;
 
 		const BST& operator = ( const BST &other ); /* assignment operator */

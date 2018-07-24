@@ -1,49 +1,83 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
+#include <stdlib.h>
+#include <time.h>
 #include <kmer.hpp>
 
 using namespace std;
 
+char getChar(char base){
+	char ret;
+	int r = rand() % 3;
+	string seq;
+  switch (base)
+  {
+      case 'A':
+					seq = "CGT";
+					ret = seq[r];
+          break;
+      case 'C':
+					seq = "AGT";
+					ret = seq[r];
+          break;
+      case 'G':
+					seq = "ACT";
+					ret = seq[r];
+          break;
+      case 'T':
+					seq = "ACG";
+					ret = seq[r];
+          break;
+      default:
+          throw std::runtime_error("invalid DNA base");
+  }
+	return ret;
+}
+
 int main(int argc, char** argv) {
 
-    if (argc != 3) {
-        cerr << "usage: " << argv[0] << " [k] [sequence]" << endl;
+    if (argc != 2) {
+        cerr << "usage: " << argv[0] << " [sequence file]" << endl;
         return 1;
     }
+/* initialize random seed: */
+		srand (time(NULL));
 
-    size_t k = atoi(argv[1]);
-		std::cout << k << std::endl;
 
-    fstream infile(argv[2], fstream::in);
-    // read each char in file
+		std::string seqname = argv[1];
+		size_t lastindex = seqname.find_last_of("."); 
+		size_t lastsla = seqname.find_last_of("/"); 
+		string rawname = seqname.substr(lastsla + 1, lastindex);
+
+		string outname = rawname + ".csv";
+
+    fstream infile(seqname, fstream::in);
+		if (!infile) {
+			cout << "Unable to open file";
+			return false;
+		}
+		fstream outfile(outname, fstream::out);
 		Kmer prof;
-		string seq((istreambuf_iterator<char>(infile)), (istreambuf_iterator<char>()));
-		seq.pop_back();
+		unsigned int ks;
+		string seq;
+		int r;
+		unsigned int i, count, ssize;
 
-		std::cout << unsigned(prof.toBin("AAATTCG")) << std::endl;
-		std::cout << unsigned(prof.toBin("AAAAATTCG")) << std::endl;
-
-//		unsigned int ns = prof.fromSequence(seq, k);
-//		std::cout << "ns " << ns << std::endl;
-//		unsigned int ks = prof.getKs(seq);
-//		std::cout << "ks " << ks << std::endl;
-//		std::vector<BST> tks = prof.BSTForest(seq, ks, 30); 
-
-		// tree->print();
-
-    // // count the nodes in the tree
-    // cout << endl;
-    // cout << "kmers inserted: " << bufcount << endl;
-    // cout << "tree size: " << tree->size() << endl;
-    // cout << "tree leaves: " << tree->numLeaves() << endl;
-    // cout << endl;
-		// string s;
-		// char str[20];
-		// tree->display(str, 0, bufcount);
-
-    // delete tree;
-		//
+		while (getline (infile, seq)){
+			ssize = seq.size();
+			count = 3;
+			ks = prof.getKs(seq);
+			outfile << ks << std::endl;
+			for (i = 0; i < count; ++i) {
+				r = rand() % ssize;
+				outfile << r << "," << seq[r] << ",";
+				seq[r] = getChar(seq[r]);
+				outfile << seq[r] << ",";
+				ks = prof.getKs(seq);
+				outfile << ks << std::endl;
+			}
+		}
 
     return 0;
 }

@@ -27,10 +27,10 @@
 
 enum
 {
-    BASE_A = 0x0, /* binary: 00 */
-    BASE_C = 0x1, /* binary: 01 */
-    BASE_G = 0x2, /* binary: 10 */
-    BASE_T = 0x3, /* binary: 11 */
+    BASE_A = 1, /* binary: 001 */
+    BASE_C = 2, /* binary: 010 */
+    BASE_G = 3, /* binary: 011 */
+    BASE_T = 4, /* binary: 100 */
 };
 /*
  * =====================================================================================
@@ -43,7 +43,7 @@ class Kmer
 	public:
 		/* ====================  LIFECYCLE     ======================================= */
 		Kmer ();                            /* constructor      */
-		Kmer (uint64_t );                   /* constructor      */
+		Kmer (unsigned int );                   /* constructor      */
 		Kmer ( const Kmer &other );   			/* copy constructor */
 		~Kmer ();                           /* destructor       */
 
@@ -53,7 +53,7 @@ class Kmer
 
 		/* ====================  MUTATORS      ======================================= */
 
-		void setK(uint64_t );
+		void setK(unsigned int );
 
 		unsigned int fromSequence(std::string , unsigned int);
 
@@ -63,9 +63,9 @@ class Kmer
 
 		/* ====================  OPERATORS     ======================================= */
 
-		std::string toSeq(uint64_t );
+		std::string toSeq(unsigned int );
 
-		uint64_t toBin(std::string );
+		unsigned int toBin(std::string );
 
 		MatrixRow getSim();
 
@@ -79,7 +79,7 @@ class Kmer
 	private:
 		/* ====================  METHODS       ======================================= */
 
-		uint64_t bitSet(std::string );
+		unsigned int bitSet(std::string );
 		double hammitDist(std::string, std::string);
 
 		/* ====================  DATA MEMBERS  ======================================= */
