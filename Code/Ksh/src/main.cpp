@@ -3,81 +3,56 @@
 #include <cstdlib>
 #include <stdlib.h>
 #include <time.h>
-#include <kmer.hpp>
+#include <vector>
+#include <algorithm>
+#include <matrix.hpp>
+#include <shclu.hpp>
 
 using namespace std;
 
-char getChar(char base){
-	char ret;
-	int r = rand() % 3;
-	string seq;
-  switch (base)
-  {
-      case 'A':
-					seq = "CGT";
-					ret = seq[r];
-          break;
-      case 'C':
-					seq = "AGT";
-					ret = seq[r];
-          break;
-      case 'G':
-					seq = "ACT";
-					ret = seq[r];
-          break;
-      case 'T':
-					seq = "ACG";
-					ret = seq[r];
-          break;
-      default:
-          throw std::runtime_error("invalid DNA base");
-  }
-	return ret;
-}
-
 int main(int argc, char** argv) {
 
-    if (argc != 2) {
-        cerr << "usage: " << argv[0] << " [sequence file]" << endl;
-        return 1;
-    }
-/* initialize random seed: */
-		srand (time(NULL));
+	if (argc != 3) {
+		cerr << "usage: " << argv[0] << " k0 [similarity file]" << endl;
+		return 1;
+	}
 
+	unsigned int k = atoi(argv[1]);
+	std::fstream infile(argv[2], fstream::in);
 
-		std::string seqname = argv[1];
-		size_t lastindex = seqname.find_last_of("."); 
-		size_t lastsla = seqname.find_last_of("/"); 
-		string rawname = seqname.substr(lastsla + 1, lastindex);
+	std::fstream simfile;
+	std::string rawname, seqname, outname;
+	size_t lastindex, lastsla;
+	std::vector<unsigned int> row;
+	MatrixRow S;
 
-		string outname = rawname + ".csv";
+	while (getline (infile, seqname)){
+		lastindex = seqname.find_last_of("."); 
+		lastsla = seqname.find_last_of("/"); 
+		outname = seqname.substr(lastsla + 1, lastindex) + ".vec";
 
-    fstream infile(seqname, fstream::in);
-		if (!infile) {
+		simfile.open(seqname, fstream::in);
+		if (!simfile) {
 			cout << "Unable to open file";
 			return false;
 		}
 		fstream outfile(outname, fstream::out);
-		Kmer prof;
-		unsigned int ks;
+
 		string seq;
-		int r;
-		unsigned int i, count, ssize;
 
-		while (getline (infile, seq)){
-			ssize = seq.size();
-			count = 3;
-			ks = prof.getKs(seq);
-			outfile << ks << std::endl;
-			for (i = 0; i < count; ++i) {
-				r = rand() % ssize;
-				outfile << r << "," << seq[r] << ",";
-				seq[r] = getChar(seq[r]);
-				outfile << seq[r] << ",";
-				ks = prof.getKs(seq);
-				outfile << ks << std::endl;
-			}
+		simfile >> S;
+
+		std::cout << "Shrinkage Init" << std::endl;
+
+		row = cpu_shrinkageClustering(S, k, 1000);
+
+		std::cout << "Num Cluster = " << *std::max_element( row.begin(), row.end() ) << std::endl;
+
+		for (unsigned int i = 0; i < row.size(); ++i) {
+			outfile << row[i] << std::endl;
 		}
+		simfile.close();
+	}
 
-    return 0;
+	return 0;
 }

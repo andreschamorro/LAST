@@ -37,7 +37,7 @@ BST::BST ()
  * Description:  constructor
  *--------------------------------------------------------------------------------------
  */
-BST::BST (unsigned int key)
+BST::BST (DnaBitset key)
 {
 	_root = new Node(key);
 }  /* -----  end of method BST::BST  (constructor)  ----- */
@@ -70,7 +70,7 @@ BST::~BST ()
 
 
 	Node *
-BST::trav ( unsigned int key, Node * & par )
+BST::trav ( DnaBitset key, Node * & par )
 {
 	Node * curr = _root;
 	par = NULL;
@@ -106,14 +106,14 @@ BST::getRoot ( )
 	return _root;
 }		/* -----  end of method BST::getRoot  ----- */
 
-	unsigned int
+	DnaBitset
 BST::getRootKey ( )
 {
 	return _root->key;
 }		/* -----  end of method BST::getRoot  ----- */
 
 	void
-BST::getKeys ( Node * n, std::vector<unsigned int> & keys )
+BST::getKeys ( Node * n, std::vector<DnaBitset> & keys )
 {
 	if (n) {
 		keys.push_back(n->key);
@@ -123,15 +123,32 @@ BST::getKeys ( Node * n, std::vector<unsigned int> & keys )
 	return ;
 }		/* -----  end of method BST::getKeys  ----- */
 
+
 	void
-BST::getKeys ( std::vector<unsigned int> & keys )
+BST::getKeys ( std::vector<DnaBitset> & keys )
 {
 	return getKeys(_root, keys);
 }		/* -----  end of method BST::getKeys  ----- */
 
+	void
+BST::getCounts ( Node * n, std::vector<unsigned int> & counts )
+{
+	if (n) {
+		counts.push_back(n->count);
+		getCounts(n->left, counts);
+		getCounts(n->right, counts);
+	}
+	return ;
+}		/* -----  end of method BST::getCounts  ----- */
+
+	void
+BST::getCounts ( std::vector<unsigned int> & counts )
+{
+	return getCounts(_root, counts);
+}		/* -----  end of method BST::getCounts  ----- */
 
 	Node *
-BST::search ( unsigned int key )
+BST::search ( DnaBitset key )
 {
 	Node * par = NULL;
 	Node * curr = trav(key, par);
@@ -140,7 +157,7 @@ BST::search ( unsigned int key )
 
 
 	unsigned int
-BST::add ( unsigned int key )
+BST::add ( DnaBitset key )
 {
 	Node * par = NULL;
 	Node * curr = trav(key, par);
@@ -207,7 +224,7 @@ BST::print ( Node * curr, unsigned int level ) const
 {
 	if (curr) {
 		print(curr->right, level+1);
-		std::cout << std::setw(level*WIDTHUNIT) << curr->key << std::endl;
+		std::cout << std::setw(level*WIDTHUNIT) << (curr->key).to_string() << std::endl;
 		print(curr->left, level+1);
 	}
 	return ;
@@ -218,7 +235,7 @@ BST::print ( std::ostream & ost, Node * curr, unsigned int level ) const
 {
 	if (curr) {
 		print(curr->right, level+1);
-		ost << std::setw(level*WIDTHUNIT) << curr->key << std::endl;
+		ost << std::setw(level*WIDTHUNIT) << (curr->key).to_string() << std::endl;
 		print(curr->left, level+1);
 	}
 	return ;
